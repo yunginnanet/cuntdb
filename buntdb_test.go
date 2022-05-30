@@ -759,7 +759,7 @@ func TestVariousTx(t *testing.T) {
 	}); err != ErrTxClosed {
 		t.Fatal("expecting tx closed error")
 	}
-	db.mu.Unlock()
+	db.Unlock()
 
 	// test for invalid writes
 	if err := db.Update(func(tx *Tx) error {
@@ -768,7 +768,7 @@ func TestVariousTx(t *testing.T) {
 	}); err != ErrTxNotWritable {
 		t.Fatal("expecting tx not writable error")
 	}
-	db.mu.Unlock()
+	db.Unlock()
 	// test for closed transactions
 	if err := db.View(func(tx *Tx) error {
 		tx.db = nil
@@ -776,7 +776,7 @@ func TestVariousTx(t *testing.T) {
 	}); err != ErrTxClosed {
 		t.Fatal("expecting tx closed error")
 	}
-	db.mu.RUnlock()
+	db.RUnlock()
 	// flush to unwritable file
 	if err := db.Update(func(tx *Tx) error {
 		_, _, err := tx.Set("var1", "val1", nil)
@@ -1147,12 +1147,12 @@ func ExampleDesc() {
 	})
 
 	// Output:
-	//3: {"name":{"first":"Carol","last":"Anderson"},"age":52}
-	//5: {"name":{"first":"Sam","last":"Anderson"},"age":51}
-	//4: {"name":{"first":"Alan","last":"Cooper"},"age":28}
-	//1: {"name":{"first":"Tom","last":"Johnson"},"age":38}
-	//2: {"name":{"first":"Janet","last":"Prichard"},"age":47}
-	//6: {"name":{"first":"Melinda","last":"Prichard"},"age":44}
+	// 3: {"name":{"first":"Carol","last":"Anderson"},"age":52}
+	// 5: {"name":{"first":"Sam","last":"Anderson"},"age":51}
+	// 4: {"name":{"first":"Alan","last":"Cooper"},"age":28}
+	// 1: {"name":{"first":"Tom","last":"Johnson"},"age":38}
+	// 2: {"name":{"first":"Janet","last":"Prichard"},"age":47}
+	// 6: {"name":{"first":"Melinda","last":"Prichard"},"age":44}
 }
 
 func ExampleDB_CreateIndex_jSON() {
@@ -1222,12 +1222,12 @@ func ExampleDB_CreateIndex_strings() {
 	})
 
 	// Output:
-	//4: Alan
-	//3: Carol
-	//2: Janet
-	//6: Melinda
-	//5: Sam
-	//1: Tom
+	// 4: Alan
+	// 3: Carol
+	// 2: Janet
+	// 6: Melinda
+	// 5: Sam
+	// 1: Tom
 }
 
 func ExampleDB_CreateIndex_ints() {
@@ -1251,12 +1251,12 @@ func ExampleDB_CreateIndex_ints() {
 	})
 
 	// Output:
-	//3: 16
-	//5: 23
-	//1: 30
-	//6: 43
-	//2: 51
-	//4: 76
+	// 3: 16
+	// 5: 23
+	// 1: 30
+	// 6: 43
+	// 2: 51
+	// 4: 76
 }
 func ExampleDB_CreateIndex_multipleFields() {
 	db, _ := Open(":memory:")
@@ -1279,12 +1279,12 @@ func ExampleDB_CreateIndex_multipleFields() {
 	})
 
 	// Output:
-	//5: {"name":{"first":"Sam","last":"Anderson"},"age":51}
-	//3: {"name":{"first":"Carol","last":"Anderson"},"age":52}
-	//4: {"name":{"first":"Alan","last":"Cooper"},"age":28}
-	//1: {"name":{"first":"Tom","last":"Johnson"},"age":38}
-	//6: {"name":{"first":"Melinda","last":"Prichard"},"age":44}
-	//2: {"name":{"first":"Janet","last":"Prichard"},"age":47}
+	// 5: {"name":{"first":"Sam","last":"Anderson"},"age":51}
+	// 3: {"name":{"first":"Carol","last":"Anderson"},"age":52}
+	// 4: {"name":{"first":"Alan","last":"Cooper"},"age":28}
+	// 1: {"name":{"first":"Tom","last":"Johnson"},"age":38}
+	// 6: {"name":{"first":"Melinda","last":"Prichard"},"age":44}
+	// 2: {"name":{"first":"Janet","last":"Prichard"},"age":47}
 }
 
 func TestNoExpiringItem(t *testing.T) {
@@ -2287,7 +2287,7 @@ func benchOpenFillData(t *testing.B, N int,
 	set, persist, random bool,
 	geo bool,
 	batch int) (db *DB, keys, vals []string) {
-	///
+	// /
 	t.StopTimer()
 	rand.Seed(time.Now().UnixNano())
 	var err error
@@ -2564,8 +2564,8 @@ func TestCoverShrinkShrink(t *testing.T) {
 		err2 = db.Shrink()
 	}()
 	wg.Wait()
-	//println(123)
-	//fmt.Printf("%v\n%v\n", err1, err2)
+	// println(123)
+	// fmt.Printf("%v\n%v\n", err1, err2)
 	if err1 != ErrShrinkInProcess && err2 != ErrShrinkInProcess {
 		t.Fatal("expecting a shrink in process error")
 	}
@@ -2630,22 +2630,22 @@ func TestJSONIndex(t *testing.T) {
 	var keys []string
 	_ = db.View(func(tx *Tx) error {
 		_ = tx.Ascend("last_name_cs", func(key, value string) bool {
-			//fmt.Printf("%s: %s\n", key, value)
+			// fmt.Printf("%s: %s\n", key, value)
 			keys = append(keys, key)
 			return true
 		})
 		_ = tx.Ascend("last_name", func(key, value string) bool {
-			//fmt.Printf("%s: %s\n", key, value)
+			// fmt.Printf("%s: %s\n", key, value)
 			keys = append(keys, key)
 			return true
 		})
 		_ = tx.Ascend("age", func(key, value string) bool {
-			//fmt.Printf("%s: %s\n", key, value)
+			// fmt.Printf("%s: %s\n", key, value)
 			keys = append(keys, key)
 			return true
 		})
 		_ = tx.Ascend("student", func(key, value string) bool {
-			//fmt.Printf("%s: %s\n", key, value)
+			// fmt.Printf("%s: %s\n", key, value)
 			keys = append(keys, key)
 			return true
 		})

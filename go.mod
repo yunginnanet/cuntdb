@@ -3,6 +3,7 @@ module github.com/tidwall/buntdb
 go 1.18
 
 require (
+	github.com/rs/zerolog v1.26.1
 	github.com/tidwall/assert v0.1.0
 	github.com/tidwall/btree v1.3.1
 	github.com/tidwall/gjson v1.14.1
